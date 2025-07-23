@@ -14,7 +14,8 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingSlot, setEditingSlot] = useState<Slot | undefined>();
-  const [filters, setFilters] = useState({ date: '', status: '' });
+  const [filters, setFilters] = useState({ date: '', status: '', userId: '' });
+
   const { user } = useAuth();
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const Dashboard: React.FC = () => {
       const data = await apiService.getSlots({
         ...(filters.date && { date: filters.date }),
         ...(filters.status && { status: filters.status }),
+        ...(filters.userId && { userId: filters.userId }),
       });
       setSlots(data);
     } catch (error) {

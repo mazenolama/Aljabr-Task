@@ -1,11 +1,8 @@
 export interface User {
-  id: string;
+  userId: number;
   name: string;
-  email: string;
-  role: 'admin' | 'user';
-  created_on?: string;
-  modified_on?: string;
 }
+
 
 export interface Slot {
   id: string;

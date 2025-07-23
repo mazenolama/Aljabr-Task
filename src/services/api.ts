@@ -1,4 +1,4 @@
-import { Slot, SlotFormData } from '../types';
+import { Slot, SlotFormData, User } from '../types';
 
 const API_BASE_URL = 'https://localhost:7131/api';
 
@@ -11,12 +11,17 @@ class ApiService {
     };
   }
 
-  async getSlots(filters?: { date?: string; status?: string; user_id?: string }): Promise<Slot[]> {
+  async getSlots(filters?: { date?: string; status?: string; userId?: string }): Promise<Slot[]> {
     const params = new URLSearchParams();
+    console.log('Fetching slots with filters:', filters);
+    
     if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value) params.append(key, value);
-      });
+Object.entries(filters).forEach(([key, value]) => {
+  if (value !== undefined && value !== null) {
+    params.append(key, value);
+  }
+});
+
     }
     
     const response = await fetch(`${API_BASE_URL}/Slots?${params}`, {
@@ -98,6 +103,23 @@ class ApiService {
     
     return response.json();
   }
+
+  async getUsers(): Promise<User[]> {
+    console.log('Calling getUsers...');
+    const response = await fetch(`${API_BASE_URL}/user`, {
+      headers: this.getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to fetch users');
+    }
+
+    return response.json();
+  }
+
+  
+
 }
 
 export const apiService = new ApiService();

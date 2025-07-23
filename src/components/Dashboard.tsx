@@ -36,22 +36,19 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  // const handleCreateSlot = async (formData: any) => {
-  //   await apiService.createSlot(formData);
-  //   fetchSlots();
-  // };
   const handleCreateSlot = async (formData: SlotFormData) => {
     const now = new Date().toISOString();
-console.log('Creating slot with data:', formData, 'at', now);
-//example 
-  // StartTime:    //'2025-07-23T16:22:39.348Z',
-  //     EndTime: //'2025-07-23T17:22:39.348Z',
+    console.log('Creating slot with data:', formData, 'at', now);
+    const storedUser = localStorage.getItem('user');
+    const user = storedUser ? JSON.parse(storedUser) : null;
+
+
     const newSlot = {
       date: formData.date,
-      StartTime: formData.date + 'T' + formData.StartTime,
-      EndTime:  formData.date + 'T' + formData.EndTime,
-      status: 'available', 
-      createdBy: user?.id ,
+      StartTime: `${formData.date}T${formData.StartTime}`,
+      EndTime: `${formData.date}T${formData.EndTime}`,
+      status: 'available',
+      createdBy: user?.userId || null, // Use parsed userId
       isAvailable: true,
     };
 
@@ -64,17 +61,40 @@ console.log('Creating slot with data:', formData, 'at', now);
   };
 
 
-  const handleUpdateSlot = async (formData: any) => {
-    if (editingSlot) {
-      await apiService.updateSlot(editingSlot.id, formData);
+const handleUpdateSlot = async (formData: any) => {
+  if (editingSlot) {
+    const now = new Date().toISOString();
+
+    // Construct Date objects
+    const start = new Date(`${formData.date}T${formData.StartTime}:00`);
+    const end = new Date(`${formData.date}T${formData.EndTime}:00`);
+
+    // Format with timezone offset (+03:00)
+    const formatWithOffset = (date: Date) =>
+      date.toLocaleString('sv-SE', { timeZone: 'Asia/Riyadh' }).replace(' ', 'T') + '+03';
+
+    const newSlot = {
+      startTime: formatWithOffset(start),
+      endTime: formatWithOffset(end),
+      modifiedOn: now,
+    };
+
+    console.log('Updating slot with data:', newSlot);
+
+    try {
+      await apiService.updateSlot(editingSlot.id, newSlot);
       fetchSlots();
+    } catch (error) {
+      console.error('Failed to update slot:', error);
     }
-  };
+  }
+};
+
 
   const handleBookSlot = async (slot: Slot) => {
     try {
       await apiService.bookSlot(slot.id);
-      // Refresh the slots after booking
+    
       fetchSlots();
     } catch (error) {
       console.error('Failed to book slot:', error);

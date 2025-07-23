@@ -76,11 +76,11 @@ const SlotCard: React.FC<SlotCardProps> = ({
         </span>
       </div>
 
-      {slot.created_by_user && (
+      {slot.created_by_name && (
         <div className="flex items-center space-x-2 mb-4">
           <User className="h-5 w-5 text-gray-500" />
           <span className="text-sm text-gray-600">
-            Created by {slot.created_by_user.name}
+            Created by {slot.created_by_name || 'Unknown'}
           </span>
         </div>
       )}

@@ -50,7 +50,7 @@ const Dashboard: React.FC = () => {
       StartTime: `${formData.date}T${formData.StartTime}`,
       EndTime: `${formData.date}T${formData.EndTime}`,
       status: 'available',
-      createdBy: user?.userId || null, // Use parsed userId
+      createdBy: user?.userId || null, 
       isAvailable: true,
     };
 

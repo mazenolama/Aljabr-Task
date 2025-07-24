@@ -22,7 +22,6 @@ const SlotForm: React.FC<SlotFormProps> = ({ slot, onSubmit, onClose, loading = 
     e.preventDefault();
     setError('');
 
-    // Validate times
     if (formData.StartTime >= formData.EndTime) {
       setError('End time must be after start time');
       return;

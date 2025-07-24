@@ -23,12 +23,12 @@ const SlotFilters: React.FC<SlotFiltersProps> = ({ filters, onFilterChange }) =>
 
 
   const handleFilterChange = (key: string, value: string) => {
-      console.log(`Filter changed: ${key} = ${value}`); // add this line
+      console.log(`Filter changed: ${key} = ${value}`); 
 
     onFilterChange({ ...filters, [key]: value });
   };
 
-  // Called when user dropdown opens
+
   const handleUserDropdownFocus = async () => {
     if (!usersLoaded) {
       setLoadingUsers(true);
@@ -90,8 +90,8 @@ const SlotFilters: React.FC<SlotFiltersProps> = ({ filters, onFilterChange }) =>
             id="user-filter"
             value={filters.userId}
             onChange={(e) => handleFilterChange('userId', e.target.value)}
-            onFocus={handleUserDropdownFocus}  // <-- call API when dropdown focused
-            disabled={loadingUsers} // disable while loading
+            onFocus={handleUserDropdownFocus}  
+            disabled={loadingUsers}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
           >
             <option value="">All Users</option>
